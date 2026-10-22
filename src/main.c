@@ -6,7 +6,6 @@ int main(void)
     ListeColis liste;
     liste_init(&liste);
 
-   
     Colis exemple[] = {
         {101,  8, 20, 2, "Paris"},
         {102,  3, 10, 5, "Lille"},
@@ -15,20 +14,24 @@ int main(void)
         {105,  2, 15, 3, "Lille"},
     };
     for (int i = 0; i < 5; i++) {
-        if (liste_ajouter(&liste, exemple[i]) != 0) {
-            printf("Erreur : plus de memoire\n");
-            liste_liberer(&liste);
-            return 1;
+        if (ajouter_colis(&liste, exemple[i]) != 0) {
+            printf("Erreur lors de l'ajout du colis %d\n", exemple[i].id);
         }
     }
 
-    
-    printf("%d colis (capacite reservee : %d)\n", liste.taille, liste.capacite);
-    for (int i = 0; i < liste.taille; i++) {
-        Colis c = liste.tab[i];
-        printf("%d  %d kg  valeur %d  prio %d  %s\n",
-               c.id, c.poids, c.valeur, c.priorite, c.destination);
+    liste_afficher(&liste);
+
+    int pos = rechercher_id(&liste, 103);
+    if (pos != -1) {
+        printf("\nColis 103 trouve :\n");
+        colis_afficher(liste.tab[pos]);
     }
+    printf("Colis 999 : %s\n", rechercher_id(&liste, 999) == -1 ? "introuvable" : "trouve");
+
+    Colis doublon = {101, 1, 1, 1, "Nice"};
+    Colis invalide = {200, 0, 10, 1, "Nice"};
+    printf("Ajout doublon 101 : code %d\n", ajouter_colis(&liste, doublon));
+    printf("Ajout poids 0     : code %d\n", ajouter_colis(&liste, invalide));
 
     liste_liberer(&liste);
     return 0;
