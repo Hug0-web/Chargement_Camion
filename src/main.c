@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "colis.h"
 #include "tri.h"
+#include "camion.h"
 
 int main(void)
 {
@@ -46,6 +47,36 @@ int main(void)
     tri_fusion(&liste, comparer_priorite);
     liste_afficher(&liste);
 
+    ListeColis chargement;
+    liste_init(&chargement);
+
+    int capacite = 20;
+    if (remplir_camion(&liste, capacite, &chargement) == 0) {
+        printf("\nChargement pour %d kg :\n", capacite);
+        liste_afficher(&chargement);
+        printf("Poids %d / %d kg, valeur %d\n", poids_total(&chargement), capacite, valeur_totale(&chargement));
+    }
+
+    ListeColis sujet;
+    liste_init(&sujet);
+    Colis abcd[] = {
+        {1, 8, 20, 5, "A"},
+        {2, 6, 25, 1, "B"},
+        {3, 5, 18, 4, "C"},
+        {4, 4, 14, 3, "D"},
+    };
+    for (int i = 0; i < 4; i++) {
+        ajouter_colis(&sujet, abcd[i]);
+    }
+    capacite = 9;
+    if (remplir_camion(&sujet, capacite, &chargement) == 0) {
+        printf("\nExemple A/B/C/D, chargement pour %d kg :\n", capacite);
+        liste_afficher(&chargement);
+        printf("Poids %d / %d kg, valeur %d\n", poids_total(&chargement), capacite, valeur_totale(&chargement));
+    }
+
+    liste_liberer(&sujet);
+    liste_liberer(&chargement);
     liste_liberer(&liste);
     return 0;
 }
