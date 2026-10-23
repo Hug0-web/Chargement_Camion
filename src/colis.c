@@ -66,7 +66,8 @@ int rechercher_id(const ListeColis *l, int id)
 
 int ajouter_colis(ListeColis *l, Colis c)
 {
-    if (c.poids <= 0 || c.valeur < 0 || c.priorite < 1 || c.priorite > 5) {
+    if (c.poids <= 0 || c.valeur < 0 || c.priorite < 1 || c.priorite > 5
+        || c.destination[0] == '\0') {
         return -3;
     }
     if (rechercher_id(l, c.id) != -1) {
