@@ -51,7 +51,7 @@ int main(void)
     liste_init(&chargement);
 
     int capacite = 20;
-    if (remplir_camion(&liste, capacite, &chargement) == 0) {
+    if (remplir_camion(&liste, capacite, 0, &chargement) == 0) {
         printf("\nChargement pour %d kg :\n", capacite);
         liste_afficher(&chargement);
         printf("Poids %d / %d kg, valeur %d\n", poids_total(&chargement), capacite, valeur_totale(&chargement));
@@ -69,10 +69,12 @@ int main(void)
         ajouter_colis(&sujet, abcd[i]);
     }
     capacite = 9;
-    if (remplir_camion(&sujet, capacite, &chargement) == 0) {
-        printf("\nExemple A/B/C/D, chargement pour %d kg :\n", capacite);
-        liste_afficher(&chargement);
-        printf("Poids %d / %d kg, valeur %d\n", poids_total(&chargement), capacite, valeur_totale(&chargement));
+    for (int avec_priorite = 0; avec_priorite <= 1; avec_priorite++) {
+        if (remplir_camion(&sujet, capacite, avec_priorite, &chargement) == 0) {
+            printf("\nExemple A/B/C/D, %d kg, %s :\n", capacite, avec_priorite ? "avec priorite" : "valeur seule");
+            liste_afficher(&chargement);
+            printf("Poids %d / %d kg, valeur %d\n", poids_total(&chargement), capacite, valeur_totale(&chargement));
+        }
     }
 
     liste_liberer(&sujet);

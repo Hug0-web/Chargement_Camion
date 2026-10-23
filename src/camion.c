@@ -1,7 +1,15 @@
 #include <stdlib.h>
 #include "camion.h"
 
-int remplir_camion(const ListeColis *colis, int capacite, ListeColis *chargement)
+int gain(Colis c, int avec_priorite)
+{
+    if (avec_priorite) {
+        return c.valeur * (6 - c.priorite);
+    }
+    return c.valeur;
+}
+
+int remplir_camion(const ListeColis *colis, int capacite, int avec_priorite, ListeColis *chargement)
 {
     int n = colis->taille;
     int largeur = capacite + 1;
@@ -22,13 +30,14 @@ int remplir_camion(const ListeColis *colis, int capacite, ListeColis *chargement
 
     for (int i = 1; i <= n; i++) {
         Colis c = colis->tab[i - 1];
+        int g = gain(c, avec_priorite);
         int *ligne = &meilleur[(size_t)i * largeur];
         int *precedente = &meilleur[(size_t)(i - 1) * largeur];
 
         for (int w = 0; w <= capacite; w++) {
             ligne[w] = precedente[w];
-            if (c.poids <= w && precedente[w - c.poids] + c.valeur > ligne[w]) {
-                ligne[w] = precedente[w - c.poids] + c.valeur;
+            if (c.poids <= w && precedente[w - c.poids] + g > ligne[w]) {
+                ligne[w] = precedente[w - c.poids] + g;
             }
         }
     }
