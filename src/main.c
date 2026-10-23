@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "colis.h"
+#include "tri.h"
 
 int main(void)
 {
@@ -32,6 +33,18 @@ int main(void)
     Colis invalide = {200, 0, 10, 1, "Nice"};
     printf("Ajout doublon 101 : code %d\n", ajouter_colis(&liste, doublon));
     printf("Ajout poids 0     : code %d\n", ajouter_colis(&liste, invalide));
+
+    printf("\nTri par poids :\n");
+    tri_fusion(&liste, comparer_poids);
+    liste_afficher(&liste);
+
+    printf("\nTri par valeur :\n");
+    tri_fusion(&liste, comparer_valeur);
+    liste_afficher(&liste);
+
+    printf("\nTri par priorite :\n");
+    tri_fusion(&liste, comparer_priorite);
+    liste_afficher(&liste);
 
     liste_liberer(&liste);
     return 0;
